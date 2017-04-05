@@ -1,17 +1,49 @@
 <DOCTYPE html>
 <html>
 	<head>
+		<meta charset="UTF-8">
 		<title>Bla</title>
 		<script type="text/javascript">
+			var xhr = '';
+
+			function quote(){
+				try
+				{xhr = new XMLHttpRequest();}
+				catch (e)
+				{xhr = new ActiveXObject("Microsoft.XMLHTTP");}
 			
+
+				if(xhr == null){
+					alert("Ajax is not supported by your browser!");
+					return;
+				}
+
+				var url = "quote.php?search=" + document.getElementById("search").value;
+
+				xhr.onreadystatechange = handler;
+				xhr. open("GET", url, true);
+				xhr.send(null);
+			}
+
+			function handler(){
+				if(xhr.readyState == 40){
+					if(xhr.status ==200){
+						document.getElementById('price').innerHTML = xhr.responseText;
+					}else{
+						alert("Error with Ajax call!");
+					}
+				}
+			}
 
 		</script>
 	</head>
 	<body>
 		<center>
-			<form action="quote.php" method="get" onsubmit="quote();">
-				Cauta: <input id="search" type="text" name="search">
+			<form action="quote.php" method="get" onsubmit="quote(); return false;">
+				Simbol: <input id="search" type="text" name="search">
 				<br>
+				Pret: <span id="price" type="text"><b>to be determined</b></span>
+				<br><br>
 				<input type="submit" value="Cauta">
 			</form>
 		</center>		
