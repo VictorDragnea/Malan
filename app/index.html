@@ -1,0 +1,78 @@
+<DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Stock Price</title>
+		<link rel="stylesheet" href="styles/main.css">
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script type="text/javascript">
+
+			$(document).ready(function(){
+				$("#form").submit(function(){
+					$.Ajax({
+						url: "quote.php",
+						data: {
+							symbol: $("#symbol").val()
+						},
+						success: function(data) {
+							$("#price").html(data.price);
+							$("#high").html(data.high);
+							$("#low").html(data.low);
+						}
+					});
+					return false;
+				});
+			});
+
+
+
+			var xhr = '';
+
+			function quote(){
+				try
+				{xhr = new XMLHttpRequest();}
+				catch (e)
+				{xhr = new ActiveXObject("Microsoft.XMLHTTP");}
+			
+
+				if(xhr == null){
+					alert("Ajax is not supported by your browser!");
+					return;
+				}
+
+				var url = "quote.php?search=" + document.getElementById("search").value;
+
+				xhr.onreadystatechange = handler;
+				xhr. open("GET", url, true);
+				xhr.send(null);
+			}
+
+			function handler(){
+				if(xhr.readyState == 40){
+					if(xhr.status ==200){
+						document.getElementById('price').innerHTML = xhr.responseText;
+					}else{
+						alert("Error with Ajax call!");
+					}
+				}
+			}
+
+		</script>
+	</head>
+	<body>
+		<center>
+			<form id="form">
+				Symbol: <input id="symbol" type="text">
+				<br><br>
+				Price: <span id="price"></span>
+				<br>
+				High: <span id="high"></span>
+				<br>
+				Low: <span id="low"></span>
+				<br><br>
+					fdsf
+				<input type="submit" value="Get Quote">
+			</form>
+		</center>		
+	</body>
+</html>
